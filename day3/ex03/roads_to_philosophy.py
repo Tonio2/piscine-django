@@ -32,23 +32,22 @@ def follow_links_to_philosophy(search_term):
             response = requests.get(current_page)
             response.raise_for_status()
 
+            if response.url:
+                print(response.url.split("/")[-1].replace("_", " "))
+
             if response.url in visited_pages:
                 print("It leads to an infinite loop!")
-                print("Visited pages:", visited_pages)
-                print("Current page:", response.url)
                 break
 
             visited_pages.append(response.url)
 
             if "Philosophy" in response.url:
                 print(f"{len(visited_pages)} roads from {search_term} to philosophy")
-                print("Visited pages:", visited_pages)
                 break
 
             first_link = find_first_link(response.text)
             if not first_link:
                 print("It leads to a dead end!")
-                print("Visited pages:", visited_pages)
                 break
 
             current_page = first_link
@@ -61,5 +60,4 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python script.py 'search_term'")
     else:
-        print(sys.argv[1])
         follow_links_to_philosophy(sys.argv[1])
