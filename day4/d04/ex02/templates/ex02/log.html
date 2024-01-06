@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Historique des entrées</title>
+</head>
+
+<body>
+  <h1>Page Ex02</h1>
+
+  <!-- Formulaire pour saisir le texte -->
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <!-- Affichage de l'historique -->
+  <h2>Historique</h2>
+  <ul>
+    {% for entry in history %}
+    <li>{{ entry }}</li>
+    {% endfor %}
+  </ul>
+</body>
+
+</html>
