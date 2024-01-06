@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Tableau de Couleurs</title>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+
+    td {
+      width: 80px;
+      height: 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Tableau de Dégradés de Couleurs</h1>
+  <table>
+    <tr>
+      <th>Noir</th>
+      <th>Rouge</th>
+      <th>Bleu</th>
+      <th>Vert</th>
+    </tr>
+    {% for color in colors %}
+    <tr>
+      <td {{ color.black|safe }}></td>
+      <td {{ color.red|safe }}></td>
+      <td {{ color.blue|safe }}></td>
+      <td {{ color.green|safe }}></td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+
+</html>
