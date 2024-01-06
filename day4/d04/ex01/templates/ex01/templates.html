@@ -1,0 +1,69 @@
+{% extends 'ex01/base.html' %}
+
+{% block style %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'ex01/style2.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include 'ex01/navbar.html' %}
+<h1>Django</h1>
+<ol>
+  <li>Moteur de templates Django :
+    <ul>
+      <li>Le moteur de templates Django utilise la notation <code>{% verbatim %}{{ variable }}{% endverbatim %}</code>
+        pour insérer des variables dans
+        un modèle HTML. Ces variables sont généralement fournies dans un contexte par la vue.</li>
+      <li>Les modèles peuvent également contenir des balises et des filtres spéciaux qui permettent de manipuler et de
+        formater les données affichées.</li>
+      <li>Les templates sont enregistrés dans des fichiers séparés avec l'extension <code>.html</code>.</li>
+    </ul>
+  </li>
+  <li>Blocs :
+    <ul>
+      <li>Les blocs sont utilisés pour définir des zones de contenu réutilisables dans les templates. Ils sont définis
+        avec la syntaxe <code>{% block nom_du_bloc %}</code> et <code>{% endblock %}</code>.</li>
+      <li>Les modèles qui étendent d'autres modèles peuvent remplacer ou étendre ces blocs en définissant à nouveau le
+        contenu du bloc dans le modèle enfant.</li>
+    </ul>
+  </li>
+  <li>Boucles for ... in :
+    <ul>
+      <li>Les boucles <code>for ... in</code> permettent de parcourir des listes ou des ensembles de données dans un
+        modèle HTML.</li>
+      <li>La syntaxe est la suivante :
+        <pre>
+          {% verbatim %}{% for element in liste %}
+            &lt;!-- Code HTML utilisant l'élément --&gt;
+          {% endfor %}{% endverbatim %}
+        </pre>
+      </li>
+    </ul>
+  </li>
+  <li>Structures de contrôle if :
+    <ul>
+      <li>Les structures de contrôle <code>if</code> permettent de conditionner l'affichage de contenu dans un modèle
+        HTML en fonction d'une condition.</li>
+      <li>La syntaxe est similaire à celle du langage Python :
+        <pre>
+          {% verbatim %}{% if condition %}
+            &lt;!-- Code HTML à afficher si la condition est vraie --&gt;
+          {% else %}
+            &lt;!-- Code HTML à afficher si la condition est fausse --&gt;
+          {% endif %}{% endverbatim %}
+        </pre>
+      </li>
+    </ul>
+  </li>
+  <li>Affichage de variables passées par contexte :
+    <ul>
+      <li>Les variables passées par contexte depuis la vue sont accessibles dans les templates avec la notation
+        <code>{% verbatim %}{{ variable }}{% endverbatim %}</code>.
+      </li>
+      <li>Par exemple, si une vue passe un dictionnaire de contexte contenant une variable <code>nom</code> à un
+        template, vous pouvez l'afficher dans le modèle ainsi : <code>{% verbatim %}{{ nom }}{% endverbatim %}</code>.
+      </li>
+    </ul>
+  </li>
+</ol>
+{% endblock %}

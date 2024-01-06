@@ -1,0 +1,42 @@
+{% extends 'ex01/base.html' %}
+
+{% block content %}
+{% include 'ex01/navbar.html' %}
+<h1>Django</h1>
+<p>Le processus d'affichage d'une page web statique à partir d'un simple template en passant par une vue dans Django
+  implique plusieurs étapes, de la requête initiale à la réponse finale. Voici une description de ces étapes :</p>
+<ol>
+  <li> Requête HTTP : Tout commence lorsque l'utilisateur visite une URL spécifique dans son navigateur. Cette action
+    génère une requête HTTP qui est envoyée au serveur Django.</li>
+
+  <li>URL Dispatcher : Le serveur Django utilise son système de routage pour associer l'URL demandée à une vue
+    spécifique. Le fichier "urls.py" du projet Django contient les règles de routage qui indiquent quelles vues doivent
+    être appelées en fonction des URL.</li>
+
+  <li>Vue : Une fois que l'URL est associée à une vue, Django exécute la fonction de vue correspondante. La vue est une
+    fonction Python qui prend généralement en charge la logique de traitement de la requête. Cette logique peut inclure
+    l'interrogation de la base de données, la manipulation de données, etc.</li>
+
+  <li>Modèle (optionnel) : Si la vue nécessite des données à partir d'une base de données ou d'une autre source de
+    données, elle peut interagir avec un modèle Django. Le modèle représente la structure et les relations des données
+    dans la base de données. La vue peut interroger ou manipuler ces données via les modèles.</li>
+
+  <li>Template : Une fois que la vue a obtenu les données nécessaires, elle peut rendre un template HTML. Les templates
+    sont des fichiers HTML qui incluent des balises et des expressions spéciales Django pour insérer dynamiquement des
+    données dans la page. Les templates permettent de séparer la logique de présentation de la logique de traitement.
+  </li>
+
+  <li>Contexte : La vue peut également envoyer un contexte au template. Le contexte est un dictionnaire Python contenant
+    des données que le template peut utiliser pour remplir les zones dynamiques de la page.</li>
+
+  <li>Rendu : Le template reçoit le contexte de la vue et génère une page HTML complète en remplaçant les balises et
+    expressions Django par les données appropriées. Le résultat est une page web statique.</li>
+
+  <li>Réponse HTTP : Une fois que le template a généré la page, la vue renvoie cette page dans une réponse HTTP au
+    navigateur de l'utilisateur. La réponse peut également inclure des en-têtes HTTP pour définir des informations
+    telles que le type de contenu, la langue, etc.</li>
+
+  <li>Affichage dans le navigateur : Enfin, le navigateur de l'utilisateur reçoit la réponse HTTP et affiche la page web
+    statique générée à l'écran.</li>
+</ol>
+{% endblock %}

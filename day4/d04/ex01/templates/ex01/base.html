@@ -1,0 +1,18 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>{% block title %}Django{% endblock %}</title>
+
+  {% block style %}
+  <link rel="stylesheet" href="{% static 'ex01/style1.css' %}">
+  {% endblock %}
+</head>
+
+<body>
+  {% block content %}{% endblock %}
+</body>
+
+</html>
