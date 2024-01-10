@@ -25,27 +25,26 @@ def initialize_database(request):
 
 
 def populate_database(request):
+    responses = []
     try:
         with connection.cursor() as cursor:
             for movie in movies:
                 try:
                     cursor.execute(
                         """
-                        INSERT INTO ex02_movies
+                        INSERT INTO ex04_movies
                         (episode_nb, title, director, producer, release_date)
                         VALUES
                         (%s, %s, %s, %s, %s);
                     """,
                         movie,
                     )
-                except DatabaseError as e:
-                    return HttpResponse(
-                        f"While inserting {movie[1]} this error occurred: {e}",
-                        status=500,
-                    )
+                    responses.append(f"OK: {movie[1]}")
+                except Exception as e:
+                    responses.append(f"Failed: {movie[1]} - {str(e)}")
             # Commit is not necessary with Django's database wrapper
-        return HttpResponse("OK", status=200)
-    except DatabaseError as e:
+        return HttpResponse("<br>".join(responses))
+    except Exception as e:
         return HttpResponse(f"Error occurred: {e}", status=500)
 
 
@@ -66,7 +65,7 @@ def display(request):
                 html += f"<tr><td>{movie[0]}</td><td>{movie[1]}</td><td>{movie[2]}</td><td>{movie[3]}</td><td>{movie[4]}</td><td>{movie[5]}</td></tr>"
             html += "</table>"
             return HttpResponse(html)
-    except DatabaseError as e:
+    except Exception as e:
         return HttpResponse(f"Error occurred: {e}", status=500)
 
 

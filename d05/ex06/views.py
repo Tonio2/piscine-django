@@ -9,15 +9,33 @@ def initialize_database(request):
         with connection.cursor() as cursor:
             cursor.execute(
                 """
-                CREATE TABLE IF NOT EXISTS ex04_movies (
+                CREATE TABLE IF NOT EXISTS ex06_movies (
                     episode_nb INT PRIMARY KEY,
                     title VARCHAR(64) NOT NULL UNIQUE,
                     opening_crawl TEXT,
                     director VARCHAR(32) NOT NULL,
                     producer VARCHAR(128) NOT NULL,
-                    release_date DATE NOT NULL
+                    release_date DATE NOT NULL,
+                    created TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+                    updated TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
                 );
             """
+            )
+
+            cursor.execute(
+                """
+                  CREATE OR REPLACE FUNCTION update_changetimestamp_column()
+                  RETURNS TRIGGER AS $$
+                  BEGIN
+                  NEW.updated = now();
+                  NEW.created = OLD.created;
+                  RETURN NEW;
+                  END;
+                  $$ language 'plpgsql';
+                  CREATE TRIGGER update_films_changetimestamp BEFORE UPDATE
+                  ON ex06_movies FOR EACH ROW EXECUTE PROCEDURE
+                  update_changetimestamp_column();
+                """
             )
             # Commit is not necessary with Django's database wrapper
         return HttpResponse("OK", status=200)
@@ -33,7 +51,7 @@ def populate_database(request):
                 try:
                     cursor.execute(
                         """
-                        INSERT INTO ex04_movies
+                        INSERT INTO ex06_movies
                         (episode_nb, title, director, producer, release_date)
                         VALUES
                         (%s, %s, %s, %s, %s);
@@ -54,7 +72,7 @@ def display(request):
         with connection.cursor() as cursor:
             cursor.execute(
                 """
-                SELECT * FROM ex04_movies;
+                SELECT * FROM ex06_movies;
             """
             )
             # Commit is not necessary with Django's database wrapper
@@ -66,23 +84,25 @@ def display(request):
                 html += f"<tr><td>{movie[0]}</td><td>{movie[1]}</td><td>{movie[2]}</td><td>{movie[3]}</td><td>{movie[4]}</td><td>{movie[5]}</td></tr>"
             html += "</table>"
             return HttpResponse(html)
-    except DatabaseError as e:
+    except Exception as e:
         return HttpResponse(f"Error occurred: {e}", status=500)
 
 
-def movie_list_and_remove(request):
+def update(request):
     try:
         # Connexion à la base de données
         with connection.cursor() as cursor:
             if request.method == "POST":
                 # Si le formulaire est soumis, supprimer le film sélectionné
                 movie_to_remove = request.POST.get("movie_title")
+                opening_crawl = request.POST.get("opening_crawl")
                 cursor.execute(
-                    "DELETE FROM ex04_movies WHERE title = %s", [movie_to_remove]
+                    "UPDATE ex06_movies SET opening_crawl = %s WHERE title = %s",
+                    [opening_crawl, movie_to_remove],
                 )
 
             # Récupérer la liste des films restants
-            cursor.execute("SELECT title FROM ex04_movies")
+            cursor.execute("SELECT title FROM ex06_movies")
             movies = cursor.fetchall()
 
         if not movies:
@@ -90,7 +110,7 @@ def movie_list_and_remove(request):
 
         # Préparer les données pour le template
         context = {"movies": movies}
-        return render(request, "ex04/remove.html", context)
+        return render(request, "ex06/update.html", context)
 
     except Exception as e:
         return HttpResponse(f"Error occurred: {e}", status=500)
