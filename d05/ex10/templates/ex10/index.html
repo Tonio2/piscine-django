@@ -1,0 +1,14 @@
+<html>
+
+<body>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" name="update">Update</button>
+  </form>
+  {% if html %}
+  {{ html|safe }}
+  {% endif %}
+</body>
+
+</html>
